@@ -1,16 +1,26 @@
-# This is a sample Python script.
+import cv2
+# import time
+# import numpy as np
+# import math
+import HandTrackingModule as htm
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+cap = cv2.VideoCapture(0)
 
+detector = htm.handDetector(detectionCon=0.7)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+last_angle = None
+last_length = None
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+minAngle = 0
+maxAngle = 180
+angle = 0
+angleBar = 400
+angleDeg = 0
+minHand = 50  # 50
+maxHand = 300  # 300
+while True:
+    success, img = cap.read()
+    img = detector.findHands(img)
+    cv2.imshow("Img", img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
